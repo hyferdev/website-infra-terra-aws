@@ -4,6 +4,16 @@ provider "aws" {
 
 module "network" {
   source = "./modules/network"
+
+  aws_region            = var.aws_region
+  vpc_cidr              = var.vpc_cidr
+  public_subnet_cidr    = var.public_subnet_cidr
+  private_subnet_cidr_1 = var.private_subnet_cidr_1
+  private_subnet_cidr_2 = var.private_subnet_cidr_2
+  availability_zone_1   = var.availability_zone_1
+  availability_zone_2   = var.availability_zone_2
+  tags                  = var.tags
+  allowed_ip            = var.allowed_ip
 }
 
 module "compute" {

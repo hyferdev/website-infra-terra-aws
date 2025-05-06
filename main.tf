@@ -26,6 +26,7 @@ module "compute" {
   private_subnet_id_2 = module.network.private_subnet_id_2
   security_group_id   = module.network.security_group_id
   tags                = var.tags
+  depends_on          = [module.network]
 }
 
 module "loadbalancer" {
@@ -36,9 +37,11 @@ module "loadbalancer" {
     module.network.private_subnet_id_1,
     module.network.private_subnet_id_2
   ]
-  target_instance_ids = [
-    module.compute.webfront_vm_1_id,
-    module.compute.webfront_vm_2_id
-  ]
+  target_instance_ids = {
+    web1 = module.compute.webfront_vm_1_id
+    web2 = module.compute.webfront_vm_2_id
+  }
+
   tags                = var.tags
+  depends_on          = [module.compute]
 }

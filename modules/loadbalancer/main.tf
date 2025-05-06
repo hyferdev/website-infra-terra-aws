@@ -21,10 +21,10 @@ resource "aws_lb_target_group" "hyfer-tg" {
 
 # Register Instances to Target Group
 resource "aws_lb_target_group_attachment" "hyfer-tg-register" {
-  for_each = toset(var.target_instance_ids)
+  for_each = var.target_instance_ids
 
   target_group_arn = aws_lb_target_group.hyfer-tg.arn
-  target_id        = each.key
+  target_id        = each.value
   port             = 80
 }
 

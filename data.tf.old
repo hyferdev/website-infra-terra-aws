@@ -1,0 +1,15 @@
+data "aws_instance" "webfront_vm_1" {
+
+  filter {
+    name   = "tag:Name"
+    values = ["hyfer-web-1"]
+  }
+}
+
+data "aws_instance" "webfront_vm_2" {
+
+  filter {
+    name   = "tag:Name"
+    values = ["hyfer-web-2"]
+  }
+}

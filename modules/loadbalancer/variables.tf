@@ -10,7 +10,7 @@ variable "subnet_ids" {
 
 variable "target_instance_ids" {
   description = "List of instance IDs to attach to the Target Group"
-  type        = list(string)
+  type        = map(string)
 }
 
 variable "tags" {

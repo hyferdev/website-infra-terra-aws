@@ -7,7 +7,8 @@ module "network" {
 
   aws_region            = var.aws_region
   vpc_cidr              = var.vpc_cidr
-  public_subnet_cidr    = var.public_subnet_cidr
+  public_subnet_cidr_1  = var.public_subnet_cidr_1
+  public_subnet_cidr_2  = var.public_subnet_cidr_2
   private_subnet_cidr_1 = var.private_subnet_cidr_1
   private_subnet_cidr_2 = var.private_subnet_cidr_2
   availability_zone_1   = var.availability_zone_1
@@ -19,9 +20,9 @@ module "network" {
 module "compute" {
   source = "./modules/compute"
 
-  instance_type       = "t3.micro"
+  instance_type       = "c7i.xlarge"
   key_name            = var.key_name
-  public_subnet_id    = module.network.public_subnet_id
+  public_subnet_id    = module.network.public_subnet_id_1
   private_subnet_id_1 = module.network.private_subnet_id_1
   private_subnet_id_2 = module.network.private_subnet_id_2
   security_group_id   = module.network.security_group_id
@@ -33,10 +34,10 @@ module "loadbalancer" {
   source = "./modules/loadbalancer"
 
   vpc_id              = module.network.vpc_id
-  subnet_ids          = [
-    module.network.private_subnet_id_1,
-    module.network.private_subnet_id_2
-  ]
+  public_subnet_ids          = [
+    module.network.public_subnet_id_1,
+    module.network.public_subnet_id_2
+]
   target_instance_ids = {
     web1 = module.compute.webfront_vm_1_id
     web2 = module.compute.webfront_vm_2_id

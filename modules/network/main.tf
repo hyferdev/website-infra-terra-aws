@@ -29,15 +29,26 @@ resource "aws_eip" "nat" {
   })
 }
 
-# Public Subnet
-resource "aws_subnet" "public" {
+# Public Subnets
+resource "aws_subnet" "public_1" {
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = var.public_subnet_cidr
+  cidr_block              = var.public_subnet_cidr_1
   map_public_ip_on_launch = true
   availability_zone       = var.availability_zone_1
 
   tags = merge(var.tags, {
-    Name = "hyfer-public-subnet"
+    Name = "hyfer-public-subnet-1"
+  })
+}
+
+resource "aws_subnet" "public_2" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.public_subnet_cidr_2
+  map_public_ip_on_launch = true
+  availability_zone       = var.availability_zone_2
+
+  tags = merge(var.tags, {
+    Name = "hyfer-public-subnet-2"
   })
 }
 
@@ -66,7 +77,7 @@ resource "aws_subnet" "private_2" {
 # NAT Gateway
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.public.id
+  subnet_id     = aws_subnet.public_1.id
 
   tags = merge(var.tags, {
     Name = "hyfer-nat-gateway"
@@ -88,8 +99,13 @@ resource "aws_route_table" "public" {
 }
 
 # Associate Public Subnet with Public Route Table
-resource "aws_route_table_association" "public_assoc" {
-  subnet_id      = aws_subnet.public.id
+resource "aws_route_table_association" "public_assoc_1" {
+  subnet_id      = aws_subnet.public_1.id
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "public_assoc_2" {
+  subnet_id      = aws_subnet.public_2.id
   route_table_id = aws_route_table.public.id
 }
 

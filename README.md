@@ -18,7 +18,7 @@ Have an idea or suggestion? We'd love to hear from you.
 
 - 📧 Email: [desire.banyeretse@hyfertechsolutions.com](mailto:desire.banyeretse@hyfertechsolutions.com)
 - 💬 Join me live:  
-  Every **Monday at 8 PM EST**, you can watch the live development session here:  
+  Every **Monday at 8PM Eastern**, you can watch the live development session here:  
   👉 [Zoom Meeting Link](https://us05web.zoom.us/j/81851194157?pwd=aDNjVfBLG01qyn0gzHSgZjHFdOuNGm.1)
 
 ---

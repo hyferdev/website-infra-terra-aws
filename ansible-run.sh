@@ -38,6 +38,14 @@ cat <<EOF > nginx.yml
         name: nginx
         state: present
 
+    - name: Overwrite Nginx default index page
+      copy:
+        src: /home/ubuntu/html
+        dest: /var/www/
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
     - name: Ensure nginx is started
       service:
         name: nginx
@@ -48,12 +56,16 @@ EOF
 # Copy files to the jumpbox
 scp -i $HYFER_SSH_KEY -o StrictHostKeyChecking=no inventory.ini nginx.yml ubuntu@$JUMPBOX_IP:/home/ubuntu/
 scp -i $HYFER_SSH_KEY -o StrictHostKeyChecking=no "$HYFER_SSH_KEY" ubuntu@$JUMPBOX_IP:/home/ubuntu/.ssh/hyfer.pem
+scp -i $HYFER_SSH_KEY -r -o StrictHostKeyChecking=no html ubuntu@$JUMPBOX_IP:/home/ubuntu/
 
 # Run Ansible remotely from the jumpbox
-ssh -i $HYFER_SSH_KEY -o StrictHostKeyChecking=no ubuntu@$JUMPBOX_IP <<'EOF'
+ssh -i $HYFER_SSH_KEY -o StrictHostKeyChecking=no ubuntu@$JUMPBOX_IP <<EOF
+  ssh-keyscan $WEBFRONT_1_IP >> ~/.ssh/known_hosts 2>/dev/null
+  ssh-keyscan $WEBFRONT_2_IP >> ~/.ssh/known_hosts 2>/dev/null
   sudo apt update && sudo apt install -y ansible
   ansible-playbook -i inventory.ini nginx.yml
 EOF
+
 
 # Clean up local temp files
 rm inventory.ini nginx.yml

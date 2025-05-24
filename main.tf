@@ -37,12 +37,29 @@ module "loadbalancer" {
   public_subnet_ids          = [
     module.network.public_subnet_id_1,
     module.network.public_subnet_id_2
-]
+  ]
   target_instance_ids = {
     web1 = module.compute.webfront_vm_1_id
     web2 = module.compute.webfront_vm_2_id
   }
-
+  acm_certificate_arn = module.certificates.certificate_arn
   tags                = var.tags
   depends_on          = [module.compute]
 }
+
+module "certificates" {
+  source      = "./modules/certificates"
+  full_domain = "quotestorm.desire-projects.com"
+  validation_record_fqdns = module.route53.validation_record_fqdns
+  tags        = var.tags
+}
+
+module "route53" {
+  source                  = "./modules/route53"
+  domain_name             = "desire-projects.com"
+  domain_validation_options = module.certificates.domain_validation_options 
+  alias_record_name = "quotestorm.desire-projects.com"
+  alb_dns_name      = module.loadbalancer.alb_dns_name
+  alb_zone_id       = module.loadbalancer.alb_zone_id
+}
+

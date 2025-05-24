@@ -18,3 +18,8 @@ variable "tags" {
   type        = map(string)
 }
 
+variable "acm_certificate_arn" {
+  description = "ARN of the ACM certificate to use for HTTPS"
+  type        = string
+}
+

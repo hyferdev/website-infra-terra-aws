@@ -63,21 +63,28 @@
     document.addEventListener("DOMContentLoaded", () => {
       async function newQuote() {
         try {
-          const res = await fetch("https://api.quotable.io/random");
+          const res = await fetch("https://api.api-ninjas.com/v1/quotes", {
+            method: "GET",
+            headers: {
+              "X-Api-Key": "LRrWBjyERZDNkX3t0BJUEQ==7S0ZEbwObn6OmLLK"
+            }
+          });
           const data = await res.json();
-          document.getElementById("quote").innerText = `${data.content} — ${data.author}`;
+          if (data.length > 0) {
+            const quote = data[0];
+            document.getElementById("quote").innerText = `${quote.quote} — ${quote.author}`;
+          } else {
+            document.getElementById("quote").innerText = "No quote received.";
+          }
         } catch (e) {
           document.getElementById("quote").innerText = "Oops! Couldn't fetch a quote right now.";
         }
       }
-
       // Load one quote initially
       newQuote();
-
       // Expose to button
       window.newQuote = newQuote;
     });
   </script>
 </body>
 </html>
-

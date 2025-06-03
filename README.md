@@ -5,7 +5,8 @@ This repository contains Terraform code for building a secure, scalable website 
 - VPC with public and private subnets across multiple availability zones  
 - NAT gateway, route tables, and security groups  
 - EC2 instances in private subnets (frontends)  
-- Application Load Balancer (ALB) targeting private instances  
+- Application Load Balancer (ALB) targeting private instances
+- API Integration  
 - Modular Terraform architecture  
 
 I am actively working on this project and will continue to update it as time allows.
